@@ -1,0 +1,61 @@
+# --- Local-only folders (not committed) ---
+docs_local/
+research_local/
+reference docs/
+
+# --- Auto-generated HTML render artifacts ---
+TECHNICAL_GUIDE_files/
+
+# --- Credentials & secrets ---
+docs_local/api_key.ipynb
+**/*api_key*
+.env
+*.token
+~/.qiskit/qiskit-ibm.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.tox/
+.venv/
+venv/
+env/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Qiskit / IBM Quantum ---
+qiskit-ibm.json
+*.qasm
+
+# --- Presentation drafts ---
+presentation/hackathon_slides_new.pptx
+presentation/hackathon_slides_elaborate.pptx
+
+# --- Node / build artifacts ---
+node_modules/
+package-lock.json
+
+# --- Misc ---
+*.log
+*.tmp

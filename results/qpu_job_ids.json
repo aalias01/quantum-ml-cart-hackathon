@@ -1,0 +1,25 @@
+{
+  "job_ids": [
+    "d834kr6gbeec73amhk2g",
+    "d834krftjchs73bop4vg",
+    "d834krg0bvlc73d315ig",
+    "d834ks6gbeec73amhk50",
+    "d834ks80bvlc73d315k0",
+    "d834ksnoha1c73bm9sb0",
+    "d834ksugbeec73amhk70",
+    "d834ktfoha1c73bm9sc0"
+  ],
+  "backend": "ibm_pittsburgh",
+  "n_samples": 8,
+  "reps": 8,
+  "qpu_indices": [
+    1,
+    4,
+    6,
+    9,
+    0,
+    2,
+    3,
+    5
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "track0": {
+    "classical": {
+      "cv_f1_weighted": 0.7731,
+      "test_accuracy": 0.7973,
+      "test_f1_weighted": 0.7971,
+      "best_C": 10.25,
+      "best_gamma": "0.005",
+      "best_gamma_resolved": 0.005
+    },
+    "quantum_pqk": {
+      "cv_f1_weighted": 0.7378,
+      "test_accuracy": 0.8243,
+      "test_f1_weighted": 0.8242,
+      "best_C": 50,
+      "best_gamma": "auto",
+      "best_gamma_resolved": 0.005556
+    },
+    "delta": {
+      "test_accuracy": 0.027,
+      "test_f1_weighted": 0.0271,
+      "winner": "QUANTUM"
+    },
+    "geometric_separation": {
+      "g_cq_one_hot_4pos": 1.5044,
+      "g_binary_2pos_utro": 15.778,
+      "sqrt_N": 13.1149,
+      "ratio_one_hot": 0.1147,
+      "N": 172
+    },
+    "model_complexity": {
+      "s_c": 1.4769,
+      "s_q": 2.7532
+    }
+  },
+  "track2_novel": {
+    "exp_A": {
+      "both_correct": 54,
+      "quantum_fixes": 7,
+      "classical_fixes": 5,
+      "both_wrong": 8,
+      "net_quantum_gain": 2
+    },
+    "exp_C": {
+      "N_values": [
+        10,
+        17,
+        26,
+        34,
+        43,
+        52,
+        69,
+        86,
+        103,
+        120,
+        137,
+        154,
+        172
+      ],
+      "g_cq_values": [
+        1.0162,
+        1.0266,
+        1.0393,
+        1.0443,
+        1.0597,
+        1.0993,
+        1.1934,
+        1.2459,
+        1.3113,
+        1.3625,
+        1.4191,
+        1.4608,
+        1.5045
+      ],
+      "ratio_values": [
+        0.3214,
+        0.249,
+        0.2038,
+        0.1791,
+        0.1616,
+        0.1524,
+        0.1437,
+        0.1343,
+        0.1292,
+        0.1244,
+        0.1212,
+        0.1177,
+        0.1147
+      ],
+      "max_gap_N": 172,
+      "max_gap_acc": 0.027,
+      "peak_ratio_N": 10,
+      "peak_ratio": 0.3214
+    }
+  },
+  "qpu_experiment": {
+    "backend": "ibm_pittsburgh",
+    "reps_live": 8,
+    "reps_reference": 24,
+    "n_samples": 8,
+    "mean_pearson_r": 0.1616,
+    "std_pearson_r": 0.1892,
+    "all_features_r": 0.1592,
+    "per_sample_r": [
+      0.0702,
+      -0.2192,
+      0.3766,
+      0.3254,
+      0.2823,
+      0.3225,
+      0.0968,
+      0.0382
+    ],
+    "interpretation": "Low correlation between reps=8 and reps=24 projections. This is a finding in itself: reps determines a fundamentally different quantum encoding. Combined with Utro et al. showing reps=8 outperforms reps=24 on F1, this suggests the tutorial's default reps is suboptimal."
+  }
+}
