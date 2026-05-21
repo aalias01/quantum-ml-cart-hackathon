@@ -48,8 +48,8 @@ env/
 qiskit-ibm.json
 *.qasm
 
-# --- Presentation drafts ---
-presentation/hackathon_slides_new.pptx
+# --- Presentation drafts / auto-generated ---
+presentation/hackathon_slides_auto.pptx
 presentation/hackathon_slides_elaborate.pptx
 
 # --- Node / build artifacts ---

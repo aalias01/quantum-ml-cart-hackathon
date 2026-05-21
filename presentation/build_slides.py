@@ -10,7 +10,7 @@ from pptx.util import Inches, Pt
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE = os.path.dirname(os.path.abspath(__file__))
 FIGS = os.path.join(BASE, "..", "results", "figures")
-OUT  = os.path.join(BASE, "hackathon_slides.pptx")
+OUT  = os.path.join(BASE, "hackathon_slides_auto.pptx")
 
 FIG_TRACK0   = os.path.join(FIGS, "track0_summary.png")
 FIG_TRACK2   = os.path.join(FIGS, "track2_novel_summary.png")
