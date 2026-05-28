@@ -5,9 +5,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from scipy.linalg import inv, sqrtm
 from sklearn.metrics.pairwise import rbf_kernel
 
@@ -27,11 +25,23 @@ def tutorial_param_grid() -> dict:
     return dict(C=C_range, gamma=gamma_range)
 
 
+def resolve_rbf_gamma(X: np.ndarray, gamma) -> float | None:
+    """Resolve SVC-style gamma values for sklearn.metrics.pairwise.rbf_kernel."""
+    if gamma == "auto":
+        return 1.0 / X.shape[1]
+    if gamma == "scale":
+        return 1.0 / (X.shape[1] * X.var())
+    return gamma
+
+
 def rbf_gram(X: np.ndarray, gamma) -> np.ndarray:
-    return rbf_kernel(X, X, gamma=gamma)
+    X = np.asarray(X)
+    return rbf_kernel(X, X, gamma=resolve_rbf_gamma(X, gamma))
 
 
 def plot_kernel_heatmap(K: np.ndarray, labels: np.ndarray, title: str, ax) -> None:
+    import seaborn as sns
+
     order = np.argsort(labels)
     K_sorted = K[np.ix_(order, order)]
     sns.heatmap(
@@ -44,9 +54,9 @@ def plot_kernel_heatmap(K: np.ndarray, labels: np.ndarray, title: str, ax) -> No
         yticklabels=False,
     )
     ax.set_title(title)
-    n_pos = int(np.sum(labels == 1))
-    ax.axhline(y=n_pos, color="red", linewidth=1.5, linestyle="--")
-    ax.axvline(x=n_pos, color="red", linewidth=1.5, linestyle="--")
+    boundary = int(np.searchsorted(labels[order], 1, side="left"))
+    ax.axhline(y=boundary, color="red", linewidth=1.5, linestyle="--")
+    ax.axvline(x=boundary, color="red", linewidth=1.5, linestyle="--")
 
 
 def save_kernel_heatmap_figure(
@@ -55,6 +65,8 @@ def save_kernel_heatmap_figure(
     train_labels: np.ndarray,
     out_path: Path | str,
 ) -> None:
+    import matplotlib.pyplot as plt
+
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))

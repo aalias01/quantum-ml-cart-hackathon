@@ -40,13 +40,13 @@ Daniels et al. (2022) synthesized **246 unique constructs** by placing 13 differ
 
 ## What We Actually Did
 
-Most quantum ML benchmarks stop at "quantum scored X, classical scored Y." We went further with three original investigations.
+Most quantum ML benchmarks stop at "quantum scored X, classical scored Y." We went further with five focused investigations.
 
 ### 1. Kernel Structure: What Does the Quantum Representation Look Like?
 
 ![Kernel Heatmaps](results/figures/kernel_heatmaps.png)
 
-*RBF Gram matrices on 172 training samples, sorted by class label. Red line = class boundary.*
+*RBF Gram matrices on 172 training samples, sorted by class label. Red dashed line = class boundary.*
 
 The quantum-projected kernel shows crisper block structure in the positive-cytotoxicity class. Where the classical kernel has diffuse boundaries near the 0.62 threshold, the quantum projection creates tighter within-class similarity — visible as sharper off-diagonal blocks.
 
@@ -86,7 +86,7 @@ We submitted 8 held-out test constructs to **ibm_pittsburgh** (IBM Eagle R3, 127
 
 The mean Pearson correlation between live projections (reps=8) and the pre-computed Heron R2 reference (reps=24) was **r = 0.16**. This low correlation is not a noise failure. A 60-qubit ZZFeatureMap at reps=8 applies 32 layers of 2-qubit entangling gates; at reps=24 it applies 64 — these are distinct Hilbert-space rotations projecting data into genuinely different subspaces. Utro et al. showed reps=8 outperforms reps=24 on classification F1, which is consistent: **reps determines what feature space the quantum computer is working in, not just how accurately it computes in that space**.
 
-QPU job IDs are preserved in `results/qpu_job_ids.json`.
+QPU job IDs are preserved in `results/qpu_job_ids.json` for auditability; no IBM Quantum credentials or API tokens are stored in the repository.
 
 ---
 
@@ -157,10 +157,10 @@ Credentials are saved to `~/.qiskit/qiskit-ibm.json`. See [`setup/ibm_quantum_se
 ### Running the Baseline
 
 ```bash
-python scripts/run_track0.py
+python3 scripts/run_track0.py
 ```
 
-Trains both SVMs via GridSearchCV, saves `results/metrics.json`, and writes kernel heatmaps to `results/figures/`. Expected runtime: ~5 minutes on a modern laptop (no QPU required).
+Trains both SVMs via GridSearchCV, saves `results/metrics.json`, and writes kernel heatmaps to `results/figures/`. Expected runtime: ~5 minutes on a modern laptop (no QPU required). If your environment aliases `python` to Python 3.11, `python scripts/run_track0.py` is equivalent.
 
 To reproduce the full analysis:
 
@@ -203,6 +203,27 @@ notebooks/03_qpu_experiment.ipynb    ← requires IBM Quantum credentials
 │   └── verification.py            ← Verify connection and list available backends
 └── requirements.txt
 ```
+
+---
+
+## Design Decisions
+
+These are the non-obvious choices made in this project — the kind a senior DS or quantum ML researcher would ask about.
+
+**1. Pre-computed Heron R2 projections, not live inference.**
+Running 172 training samples through a 60-qubit ZZFeatureMap on a live QPU takes ~100 minutes of queue time and is non-reproducible (hardware noise varies by run). The IBM tutorial provides fixed projections from Heron R2. Using these as the authoritative training feature set gives a stable, reproducible benchmark while reserving the live QPU submission (Experiment 5, ibm_pittsburgh) for a controlled scientific variable — circuit depth via reps.
+
+**2. One-hot encoding with angle scaling (1 → π/2), not binary or ordinal.**
+Motif IDs are categorical with no natural ordering. One-hot is the only encoding that treats all 13 motifs symmetrically. The angle scaling to π/2 is required for ZZFeatureMap: the circuit applies RZ(x) rotations, and π/2 puts each active qubit at the equator of the Bloch sphere where ZZ entanglement has maximum effect. Binary encoding (Utro et al.) uses a 2-position variant — we compare both through the geometric separation metric.
+
+**3. Fixed hackathon train/test split — no re-splitting.**
+The 172/74 split is the official hackathon partition. Re-splitting for cross-validation would create data leakage between the fixed test set and any parameter selection. All hyperparameter selection uses 10-fold stratified CV on the 172 training samples only; the 74-sample test set is touched exactly once per model.
+
+**4. reps=8 live vs. reps=24 pre-computed — treated as a scientific variable, not a limitation.**
+The QPU experiment uses reps=8 rather than reps=24 to minimize circuit depth and queue time. Rather than apologizing for this, we treat it as an experiment: does circuit depth (reps) determine a genuinely distinct Hilbert-space encoding, or just noise level? The Pearson r = 0.16 between reps=8 and reps=24 projections — combined with Utro et al.'s finding that reps=8 achieves higher F1 — answers the question: reps is a scientific variable, not just a knob.
+
+**5. Geometric separation as the theoretical lens, not just "quantum beat classical."**
+Any benchmark that only reports accuracy delta can be dismissed as cherry-picking. We compute g_cq (Huang et al. 2021) at every training set size to answer: *does theory predict the quantum advantage we observe?* The result — g_cq = 1.50 << √N = 13.11 with one-hot encoding, yet quantum wins — is the sharpest finding in the project. It shows the Huang et al. bound is not sufficient under one-hot encoding and motivates the implicit regularization interpretation.
 
 ---
 

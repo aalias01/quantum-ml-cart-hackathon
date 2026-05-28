@@ -3,8 +3,8 @@ docs_local/
 research_local/
 reference docs/
 
-# --- Auto-generated HTML render artifacts ---
-TECHNICAL_GUIDE_files/
+# --- Auto-generated Quarto HTML render artifacts (single-file renders; _files/ folders shouldn't appear) ---
+*_files/
 
 # --- Credentials & secrets ---
 docs_local/api_key.ipynb
