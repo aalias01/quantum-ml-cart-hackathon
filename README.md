@@ -6,7 +6,7 @@
 ![Hardware](https://img.shields.io/badge/IBM%20Hardware-Heron%20R2%20%2B%20Eagle%20R3-0062ff?logo=ibm&logoColor=white)
 
 > **Can a quantum computer learn biology better than a classical one?**
-> We put that question to a real IBM quantum processor — and the answer turned out to be more interesting than yes or no.
+> We put that question to a real IBM quantum processor. The answer turned out to be more interesting than a simple yes or no.
 
 This project applies **Projected Quantum Kernel (PQK) machine learning** to predicting which synthetic CAR-T cell signaling domains will kill leukemia cells. The dataset comes from Daniels et al. (2022, *Science*), who measured cytotoxicity for 246 CAR-T constructs built from combinatorial assemblies of 13 signaling motifs. Rather than just running the baseline, we investigated the deeper question: **when and why does quantum projection help, and what does theory say about it?**
 
